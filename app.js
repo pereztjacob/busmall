@@ -14,15 +14,13 @@ const picArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 
 // array to be used in shuffle function    
 let myArray = ['0','1','2','3','4','5','6','7','8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
 
+// click values storage
 let clickValues = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-
-// TODO put item instances in objectArray
 
 // constructor function containing picarray values, indexes, and click values
 function item(name, clicks){
     this.name = name;
     this.clicks = clicks;
-  ///  this.source = source;
 }
 let itemZero = new item(nameArray[0], 0);
 let itemOne = new item(nameArray[1], 0);
@@ -46,15 +44,13 @@ let itemEighteen = new item(nameArray[18], 0);
 let itemNineteen = new item(nameArray[19], 0);
 let itemTwenty = new item(nameArray[20], 0);
 
-console.log(itemEight.name);
-
 const objectArray = [itemZero, itemTwo, itemThree, itemFour, itemFive, itemSix, itemSeven, itemEight, itemNine, itemTen,
         itemEleven, itemTwelve, itemThirteen, itemFourteen, itemFifteen, itemSixteen, itemSeventeen, itemEighteen, itemNineteen, itemTwenty];
 for(let i = 0; i < 19; i++){
     console.log(objectArray[i]);
 }
 
-// randomizes numbers in an array. by accessing the first three, i get three random ints with no duplicates.
+// randomizes numbers in an array
 function shuffle(spread) {
     var j, x, i;
     for (i = spread.length - 1; i > 0; i--) {
@@ -90,7 +86,7 @@ pict.addEventListener('click', clickHandler);
 
 
 
-/* ***** **** *** ** * REMOVES CLICKED ITEM AND CLICKS++, RENDERS NEW ITEM IN IT'S PLACE * ** *** **** ***** */
+/* ***** **** *** ** * REMOVES CLICKED ITEM AND ADDS +1 TO  OBJECT'S CLICK VALUES, RENDERS NEW ITEM IN IT'S PLACE * ** *** **** ***** */
 /* **** *** ** * ** *** **** ***** **** *** ** * ** *** **** ***** */
 /* *** ** * ** *** **** **** *** ** * ** *** **** */
 /* ** * ** *** ** * ** *** ** * ** *** */
@@ -98,25 +94,23 @@ pict.addEventListener('click', clickHandler);
 function clickHandler(e){
 
     globalI++;
-
     const clickedItem = e.target;
 
+    // prevents clickhandler from deleting entire section element
     if(clickedItem.id === 'imageSpace'){
         globalI--;
         return;
     }
 
     clickedItem.remove();
-
     render(picArray[myArray[globalI + 3]], nameArray[myArray[globalI + 3]]);
 
+    // disallows click events after a certain number of votes
     if(globalI >= 17){
         pict.removeEventListener('click', clickHandler);
     }
 
     for(let i = 0; i < objectArray.length; i++){
-        // console.log(objectArray[i].name);
-        console.log(clickedItem.getAttribute('name'));
         if(objectArray[i].name === clickedItem.getAttribute('name')){
             objectArray[i].clicks++;
             console.log(objectArray[i].clicks);
