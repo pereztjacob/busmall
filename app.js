@@ -23,14 +23,14 @@ if (localStorage.fruits) {
 } else {
     // if we don't have stored fruit:
     // create new fruits and put them in our fruits array
-    const apple = new Fruit('apple', 'images/boots.jpg');
+    const apple = new Fruit('apple', 'images/breakfast.jpg');
     const watermelon = new Fruit('watermelon', 'images/bag.jpg');
     const bomb = new Fruit('bomb', 'images/chair.jpg');
     
     fruits = [apple,watermelon,bomb];
 }
 
-for (let i = 0; i < 10; i ++) {
+for (let i = 0; i < 3; i ++) {
     appendRandomFruit();
 }
 
