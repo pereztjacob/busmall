@@ -1,155 +1,153 @@
-'use strict';
 
-let globalI = 0;
+let clicks = 0;
+let fruits = [];
 
-const nameArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen',
-    'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+if (localStorage.fruits) {
+    console.log('we has fruit');
 
-// array containing image file locations
-const picArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 'images/boots.jpg', 'images/breakfast.jpg', 
-    'images/bubblegum.jpg', 'images/chair.jpg', 'images/cthulhu.jpg', 'images/dog-duck.jpg', 'images/dragon.jpg', 'images/pen.jpg',
-    'images/pet-sweep.jpg', 'images/scissors.jpg', 'images/shark.jpg', 'images/sweep.png', 'images/tauntaun.jpg', 'images/unicorn.jpg',
-    'images/usb.gif', 'images/water-can.jpg', 'images/wine-glass.jpg'];
-
-// array to be used in shuffle function    
-let myArray = ['0','1','2','3','4','5','6','7','8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
-
-// constructor function containing picarray values, indexes, and click values
-function item(name, clicks){
-    this.name = name;
-    this.clicks = clicks;
-}
-let itemZero = new item(nameArray[0], 0);
-let itemOne = new item(nameArray[1], 0);
-let itemTwo = new item(nameArray[2], 0);
-let itemThree = new item(nameArray[3], 0);
-let itemFour = new item(nameArray[4], 0);
-let itemFive = new item(nameArray[5], 0);
-let itemSix = new item(nameArray[6], 0);
-let itemSeven = new item(nameArray[7], 0);
-let itemEight = new item(nameArray[8], 0);
-let itemNine = new item(nameArray[9], 0);
-let itemTen = new item(nameArray[10], 0);
-let itemEleven = new item(nameArray[11], 0);
-let itemTwelve = new item(nameArray[12], 0);
-let itemThirteen = new item(nameArray[13], 0);
-let itemFourteen = new item(nameArray[14], 0);
-let itemFifteen = new item(nameArray[15], 0);
-let itemSixteen = new item(nameArray[16], 0);
-let itemSeventeen = new item(nameArray[17], 0);
-let itemEighteen = new item(nameArray[18], 0);
-let itemNineteen = new item(nameArray[19], 0);
-let itemTwenty = new item(nameArray[20], 0);
-
-const objectArray = [itemZero, itemTwo, itemThree, itemFour, itemFive, itemSix, itemSeven, itemEight, itemNine, itemTen,
-        itemEleven, itemTwelve, itemThirteen, itemFourteen, itemFifteen, itemSixteen, itemSeventeen, itemEighteen, itemNineteen, itemTwenty];
-for(let i = 0; i < 19; i++){
-    console.log(objectArray[i]);
-}
-
-// randomizes numbers in an array
-function shuffle(spread) {
-    var j, x, i;
-    for (i = spread.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = spread[i];
-        spread[i] = spread[j];
-        spread[j] = x;
+    // if we have fruits in localStorage
+    // get them, instantiate them, and put them in our fruits array
+    
+    // fruitsArray is an array of object literals - not Fruits!
+    const fruitsArray = JSON.parse(localStorage.fruits);
+    console.log('fruitsArray:', fruitsArray);
+    
+    for (let i = 0; i < fruitsArray.length; i++) {
+        // fruitsArray[i] === {type: 'apple', src: 'apple.png', sliced: 1}
+        // make sure each fruit has an updated sliced properties
+        const fruit = new Fruit(fruitsArray[i].type, fruitsArray[i].src, fruitsArray[i].sliced);
+        console.log('current fruit:', fruit);
+        console.log('fruits array:', fruits)
+        fruits.push(fruit);
     }
-}
-shuffle(myArray);
-
-// renders three non-dupe random images to the DOM
-function render(source, name){
-    const pics = document.getElementById('imageSpace');
-    const img = document.createElement('img');
-    img.setAttribute('src', source);
-    img.setAttribute('width', '300px');
-    img.setAttribute('height', '300px');
-    img.setAttribute('class', 'pix');
-    img.setAttribute('name', name);
-
-    pics.appendChild(img);
+} else {
+    // if we don't have stored fruit:
+    // create new fruits and put them in our fruits array
+    const apple = new Fruit('apple', 'images/boots.jpg');
+    const watermelon = new Fruit('watermelon', 'images/bag.jpg');
+    const bomb = new Fruit('bomb', 'images/chair.jpg');
+    
+    fruits = [apple,watermelon,bomb];
 }
 
-// calls render function
-for(let i = 0; i < 3; i++){
-    render(picArray[myArray[i]], nameArray[i]);
+for (let i = 0; i < 10; i ++) {
+    appendRandomFruit();
 }
 
-// creates event listener
-let pict = document.getElementById('imageSpace');
-pict.addEventListener('click', clickHandler);
 
 
+const game = document.getElementById('game');
+game.addEventListener('click', clickHandler);
 
+function clickHandler (e) {
+    const clickedFruit = e.target; // is the html element that was clicked
+    
+    // will exit the function if the game section was clicked
+    if (clickedFruit.id === 'game') return; 
 
-/* ***** **** *** ** * REMOVES CLICKED ITEM AND ADDS +1 TO  OBJECT'S CLICK VALUES, RENDERS NEW ITEM IN IT'S PLACE * ** *** **** ***** */
-/* **** *** ** * ** *** **** ***** **** *** ** * ** *** **** ***** */
-/* *** ** * ** *** **** **** *** ** * ** *** **** */
-/* ** * ** *** ** * ** *** ** * ** *** */
-/* * ** *** **** *** ** */
-function clickHandler(e){
-    
-    globalI++;
-    const clickedItem = e.target;
-    console.log(clickedItem.getAttribute('name'));
-    
-    // prevents clickhandler from deleting entire section element
-    if(clickedItem.id === 'imageSpace'){
-        globalI--;
-        return;
-    }
-    
-    clickedItem.remove();
-    render(picArray[myArray[globalI + 3]], nameArray[myArray[globalI + 3]]);
-    
-    if(globalI >= 8){
-        pict.removeEventListener('click', clickHandler);
-        for(let i = 0; i < objectArray.length; i++){
-            barData.data.datasets[0].data.push(objectArray[i].clicks);
-            barData.data.labels.push(objectArray[i].name);
+    // looping over fruits array to find the fruit instance to update
+    for (let i = 0; i < fruits.length; i ++) {
+        const fruitClass = clickedFruit.classList.value;
+        if (fruits[i].type === fruitClass) {
+            fruits[i].wasSliced();
+            console.log('number of slices', fruits[i].sliced);
         }
-        console.log(barData);
-       // barData.data.remove('labels');
-        var myChart = new Chart(ctx, barData);
     }
-    // disallows click events after a certain number of votes
+
+    // remove element
+    clickedFruit.remove();
     
-
-    for(let i = 0; i < objectArray.length; i++){
-        if(objectArray[i].name === clickedItem.getAttribute('name')){        
-            objectArray[i].clicks++;
-            console.log(objectArray[i].clicks);
-        }
-    }    
-}
-
-for(let i = 0; i < 17; i++){
-    console.log(objectArray[i].clicks);
+    // render a new element
+    appendRandomFruit();
+    
+    // increase number of times clicked and if over 5, call endGame()
+    clicks++;
+    if (clicks >= 4) {
+        endGame();
+    }
 }
 
 
-var ctx = document.getElementById("myChart").getContext('2d');
 
-var barData = {
-    type: 'bar',
-    data: {
-        labels: [],
-        datasets: [{
-            label: 'sfda',
-            data: [],
-            borderColor: ['rgba(255,99,132,1)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
+function appendRandomFruit () {
+    const game = document.getElementById('game');
+
+    // select random fruit object from fruits array, save in randomFruit
+    randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
+    const randomFruitEle = randomFruit.render(); // returns img element
+    game.appendChild(randomFruitEle);
+}
+
+function endGame () {
+    // remove click listener on game section
+    const game = document.getElementById('game');
+    game.removeEventListener('click', clickHandler);
+
+    console.table(fruits);
+    drawChart();
+    // TODO save the fruits in localstorage!
+    // JSON.stringify turns an array of objects into a nice string
+    localStorage.setItem('fruits', JSON.stringify(fruits));
+    // ^ same thing as: localStorage.fruits = fruits;
+}
+
+function drawChart () {
+  // TODO get canvas element and its context
+  const canvas = document.getElementById('endCard');
+  const context = canvas.getContext('2d');
+
+  // TODO add some graphics to our canvas
+  context.fillStyle = 'rgba(200,100,200,1)';
+  context.fillRect(0,0,200,200);
+
+  // TODO add text that says "Game over!"
+  context.font = '20px sans-serif';
+  for (let i = 0; i < 10; i++) {
+      context.strokeText('GAME OVER', 200, 200);
+  }
+
+  const fruitNames = [];
+  const slicedData = []; // [4,2,1]
+
+  for ( let i = 0; i < fruits.length; i++ ){
+      fruitNames.push(fruits[i].type);
+      slicedData.push(fruits[i].sliced);
+
+      console.log( 'fruitNames:', fruitNames );
+      console.log( 'slicedData:', slicedData );
+  }
+
+  // TODO add a chart that shows # of slices per fruit
+  const chartCanvas = document.getElementById('chart');
+  const chartCtx = chartCanvas.getContext('2d');
+
+  const chart = new Chart (
+      chartCtx, // first param is the canvas context
+      { // first level children: type, data, options
+          type: 'bar',
+          data: { // data's children: labels, datasets
+              labels: fruitNames, // ['apple','watermelon','bomb'], // y axis labels
+              datasets: [
+                  { // dataset object's children: label, data, backgroundColor
+                      label: 'Number of slices',
+                      data: slicedData, // [5,2,0], // data points
+                      backgroundColor: 'rgba(255,100,20,1)'
+                  }
+              ]
+          },
+          options: {
+                title: {
+                    display: true,
+                    text: 'Fruits Sliced'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
                 }
-            }]
-        }
-    },
-};
+          }
+      }
+  );
+}

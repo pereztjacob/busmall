@@ -1,7 +1,15 @@
-#graphSpace{
-    width: 800px;
-    height: 350px !important;
+#game {
+    display: flex;
+    justify-content: space-around;
+    /* width: 500px; */
+    height: 500px;
 }
-#myChart{
-    height: 350px !important;
+
+#game img {
+    height: 100px;
+    width: 100px;
+}
+
+#chart-container {
+    width: 600px;
 }
