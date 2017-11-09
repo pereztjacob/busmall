@@ -93,6 +93,7 @@ function clickHandler(e){
     
     globalI++;
     const clickedItem = e.target;
+    console.log(clickedItem.getAttribute('name'));
     
     // prevents clickhandler from deleting entire section element
     if(clickedItem.id === 'imageSpace'){
@@ -107,7 +108,7 @@ function clickHandler(e){
         pict.removeEventListener('click', clickHandler);
         for(let i = 0; i < objectArray.length; i++){
             barData.data.datasets[0].data.push(objectArray[i].clicks);
-          //  barData.labels.push(objectArray[i].name);
+            barData.data.labels.push(objectArray[i].name);
         }
         console.log(barData);
        // barData.data.remove('labels');
@@ -115,8 +116,9 @@ function clickHandler(e){
     }
     // disallows click events after a certain number of votes
     
+
     for(let i = 0; i < objectArray.length; i++){
-        if(objectArray[i].name === clickedItem.getAttribute('name')){
+        if(objectArray[i].name === clickedItem.getAttribute('name')){        
             objectArray[i].clicks++;
             console.log(objectArray[i].clicks);
         }
@@ -133,9 +135,9 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var barData = {
     type: 'bar',
     data: {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        labels: [],
         datasets: [{
-            label: 'sdfa',
+            label: 'sfda',
             data: [],
             borderColor: ['rgba(255,99,132,1)'],
             borderWidth: 1
