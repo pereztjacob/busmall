@@ -14,9 +14,6 @@ const picArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 
 // array to be used in shuffle function    
 let myArray = ['0','1','2','3','4','5','6','7','8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
 
-// click values storage
-let clickValues = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-
 // constructor function containing picarray values, indexes, and click values
 function item(name, clicks){
     this.name = name;
@@ -68,6 +65,7 @@ function render(source, name){
     const img = document.createElement('img');
     img.setAttribute('src', source);
     img.setAttribute('width', '300px');
+    img.setAttribute('height', '300px');
     img.setAttribute('class', 'pix');
     img.setAttribute('name', name);
 
@@ -92,24 +90,31 @@ pict.addEventListener('click', clickHandler);
 /* ** * ** *** ** * ** *** ** * ** *** */
 /* * ** *** **** *** ** */
 function clickHandler(e){
-
+    
     globalI++;
     const clickedItem = e.target;
-
+    
     // prevents clickhandler from deleting entire section element
     if(clickedItem.id === 'imageSpace'){
         globalI--;
         return;
     }
-
+    
     clickedItem.remove();
     render(picArray[myArray[globalI + 3]], nameArray[myArray[globalI + 3]]);
-
-    // disallows click events after a certain number of votes
-    if(globalI >= 17){
+    
+    if(globalI >= 8){
         pict.removeEventListener('click', clickHandler);
+        for(let i = 0; i < objectArray.length; i++){
+            barData.data.datasets[0].data.push(objectArray[i].clicks);
+          //  barData.labels.push(objectArray[i].name);
+        }
+        console.log(barData);
+       // barData.data.remove('labels');
+        var myChart = new Chart(ctx, barData);
     }
-
+    // disallows click events after a certain number of votes
+    
     for(let i = 0; i < objectArray.length; i++){
         if(objectArray[i].name === clickedItem.getAttribute('name')){
             objectArray[i].clicks++;
@@ -117,3 +122,32 @@ function clickHandler(e){
         }
     }    
 }
+
+for(let i = 0; i < 17; i++){
+    console.log(objectArray[i].clicks);
+}
+
+
+var ctx = document.getElementById("myChart").getContext('2d');
+
+var barData = {
+    type: 'bar',
+    data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        datasets: [{
+            label: 'sdfa',
+            data: [],
+            borderColor: ['rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    },
+};
