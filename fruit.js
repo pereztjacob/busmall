@@ -1,15 +1,15 @@
 // constructor function for Fruits options
-function Fruit (type, src, sliced) {
+function Item (type, src, votes) {
     this.type = type;
     this.src = src;
-    this.sliced = sliced || 0;
+    this.votes = votes || 0;
 }
 
-Fruit.prototype.wasSliced = function () {
-    this.sliced += 1;
+Item.prototype.wasClicked = function () {
+    this.votes += 1;
 };
 
-Fruit.prototype.render = function () {
+Item.prototype.render = function () {
     const ele = document.createElement('img');
     ele.src = this.src;
     ele.classList.add(this.type);

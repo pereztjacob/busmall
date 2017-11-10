@@ -1,64 +1,100 @@
 
 let clicks = 0;
-let fruits = [];
+let items = [];
 
-if (localStorage.fruits) {
-    console.log('we has fruit');
+/* **********************************   LOCAL STORAGE SECTION   ********************************************
+    *********************************************************************
+    ********************************************
+    ******************************
+    ******************
+    ******* */
 
-    // if we have fruits in localStorage
-    // get them, instantiate them, and put them in our fruits array
+if (localStorage.items) {
+    // if we have items in localStorage
+    // get them, instantiate them, and put them in our items array
+    const itemsArray = JSON.parse(localStorage.items);
+    console.log('itemsArray:', itemsArray);
     
-    // fruitsArray is an array of object literals - not Fruits!
-    const fruitsArray = JSON.parse(localStorage.fruits);
-    console.log('fruitsArray:', fruitsArray);
-    
-    for (let i = 0; i < fruitsArray.length; i++) {
-        // fruitsArray[i] === {type: 'apple', src: 'apple.png', sliced: 1}
-        // make sure each fruit has an updated sliced properties
-        const fruit = new Fruit(fruitsArray[i].type, fruitsArray[i].src, fruitsArray[i].sliced);
-        console.log('current fruit:', fruit);
-        console.log('fruits array:', fruits)
-        fruits.push(fruit);
+    for (let i = 0; i < itemsArray.length; i++) {
+        // itemsArray[i] === {type: 'breakfast', src: 'breakfast.png', votes: 1}
+        // make sure each item has an updated votes properties
+        const item = new Item(itemsArray[i].type, itemsArray[i].src, itemsArray[i].votes);
+        items.push(item);
     }
 } else {
-    // if we don't have stored fruit:
-    // create new fruits and put them in our fruits array
-    const apple = new Fruit('apple', 'images/breakfast.jpg');
-    const watermelon = new Fruit('watermelon', 'images/bag.jpg');
-    const bomb = new Fruit('bomb', 'images/chair.jpg');
+    // if we don't have stored item:
+    // create new items and put them in our items array
+    const breakfast = new Item('breakfast', 'images/breakfast.jpg');
+    const bag = new Item('bag', 'images/bag.jpg');
+    const chair = new Item('chair', 'images/chair.jpg');
+    const banana = new Item('banana', 'images/banana.jpg');
+    const bathroom = new Item('bathroom', 'images/bathroom.jpg');
+    const boots = new Item('boots', 'images/boots.jpg');
+    const bubblegum = new Item('bubblegum', 'images/bubblegum.jpg');
+    const cthulhu = new Item('cthulhu', 'images/cthulhu.jpg');
+    const dogDuck = new Item('dog-duck', 'images/dog-duck.jpg');
+    const dragon = new Item('dragon', 'images/dragon.jpg');
+    const pen = new Item('pen', 'images/pen.jpg');
+    const petSweep = new Item('pet-sweep', 'images/pet-sweep.jpg');
+    const scissors = new Item('scissors', 'images/scissors.jpg');
+    const shark = new Item('shark', 'images/shark.jpg');
+    const sweep = new Item('sweep', 'images/sweep.png');
+    const tauntaun = new Item('tauntaun', 'images/tauntaun.jpg');
+    const unicorn = new Item('unicorn', 'images/unicorn.jpg');
+    const usb = new Item('usb', 'images/usb.gif');
+    const waterCan = new Item('water-can', 'images/water-can.jpg');
+    const wineGlass = new Item('wine-glass', 'images/wine-glass.jpg');
     
-    fruits = [apple,watermelon,bomb];
+    items = [breakfast, bag, chair, banana, bathroom, boots, bubblegum, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, usb, waterCan, wineGlass];
 }
 
+/* ********************
+    **************************************
+    **************************************************************
+    ********************************************************************************** */
+
+// Call to render item
 for (let i = 0; i < 3; i ++) {
-    appendRandomFruit();
+    appendRandomItem();
 }
 
-
-
+/* **********************************   CLICK HANDLER SECTION   ********************************************
+    *********************************************************************
+    ********************************************
+    ******************************
+    ******************
+    ******* */
 const game = document.getElementById('game');
 game.addEventListener('click', clickHandler);
 
 function clickHandler (e) {
-    const clickedFruit = e.target; // is the html element that was clicked
-    
-    // will exit the function if the game section was clicked
-    if (clickedFruit.id === 'game') return; 
+    const clickedItem = e.target;
 
-    // looping over fruits array to find the fruit instance to update
-    for (let i = 0; i < fruits.length; i ++) {
-        const fruitClass = clickedFruit.classList.value;
-        if (fruits[i].type === fruitClass) {
-            fruits[i].wasSliced();
-            console.log('number of slices', fruits[i].sliced);
+   // const selector = document.getElementById(game);
+    const pagePix = game.querySelectorAll('img');
+  //  console.log(pagePix[0].classList);
+    pagePix[0].remove();
+    pagePix[1].remove();
+    pagePix[2].remove();
+    console.log(pagePix[0], pagePix[1], pagePix[2]);
+    
+    if (clickedItem.id === 'game') return; 
+
+    // looping over items array to find the item instance to update
+    for (let i = 0; i < items.length; i ++) {
+        const itemClass = clickedItem.classList.value;
+        if (items[i].type === itemClass) {
+            items[i].wasClicked();
         }
     }
 
     // remove element
-    clickedFruit.remove();
+    clickedItem.remove();
     
     // render a new element
-    appendRandomFruit();
+    for(let i = 0; i < 3; i++){
+        appendRandomItem();
+    }
     
     // increase number of times clicked and if over 5, call endGame()
     clicks++;
@@ -67,57 +103,64 @@ function clickHandler (e) {
     }
 }
 
+/* ********************
+    **************************************
+    **************************************************************
+    ********************************************************************************** */
 
-
-function appendRandomFruit () {
+// RENDER IMAGES
+function appendRandomItem () {
     const game = document.getElementById('game');
 
-    // select random fruit object from fruits array, save in randomFruit
-    randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
-    const randomFruitEle = randomFruit.render(); // returns img element
-    game.appendChild(randomFruitEle);
+    // select random item object from items array, save in randomItem
+    randomItem = items[Math.floor(Math.random() * items.length)];
+    const randomItemEle = randomItem.render(); // returns img element
+    
+    const two = game.querySelectorAll('img');
+    if(two.length){
+        console.log(two[0].classList);
+    }
+    //  const pagePix = game.querySelectorAll('img');
+    //  console.log(pagePix[0].classList);
+    
+    console.log(randomItem.type);
+    if(two.length){
+        if(randomItem.type !== two[0].classList.value){
+            game.appendChild(randomItemEle);
+        }    
+    }
 }
 
+// stops game after n clicks
+// draws chart after n clicks
 function endGame () {
-    // remove click listener on game section
     const game = document.getElementById('game');
     game.removeEventListener('click', clickHandler);
 
-    console.table(fruits);
     drawChart();
-    // TODO save the fruits in localstorage!
+    // save the items in localstorage!
     // JSON.stringify turns an array of objects into a nice string
-    localStorage.setItem('fruits', JSON.stringify(fruits));
-    // ^ same thing as: localStorage.fruits = fruits;
+    localStorage.setItem('items', JSON.stringify(items));
+    // ^ same thing as: localStorage.items = items;
 }
 
+/* **********************************   CHART SECTION   ********************************************
+    *********************************************************************
+    ********************************************
+    ******************************
+    ******************
+    ******* */
+
 function drawChart () {
-  // TODO get canvas element and its context
-  const canvas = document.getElementById('endCard');
-  const context = canvas.getContext('2d');
+  const itemNames = [];
+  const votesData = [];
 
-  // TODO add some graphics to our canvas
-  context.fillStyle = 'rgba(200,100,200,1)';
-  context.fillRect(0,0,200,200);
-
-  // TODO add text that says "Game over!"
-  context.font = '20px sans-serif';
-  for (let i = 0; i < 10; i++) {
-      context.strokeText('GAME OVER', 200, 200);
+  for ( let i = 0; i < items.length; i++ ){
+      itemNames.push(items[i].type);
+      votesData.push(items[i].votes);
   }
 
-  const fruitNames = [];
-  const slicedData = []; // [4,2,1]
-
-  for ( let i = 0; i < fruits.length; i++ ){
-      fruitNames.push(fruits[i].type);
-      slicedData.push(fruits[i].sliced);
-
-      console.log( 'fruitNames:', fruitNames );
-      console.log( 'slicedData:', slicedData );
-  }
-
-  // TODO add a chart that shows # of slices per fruit
+  // add a chart that shows # of slices per item
   const chartCanvas = document.getElementById('chart');
   const chartCtx = chartCanvas.getContext('2d');
 
@@ -126,11 +169,11 @@ function drawChart () {
       { // first level children: type, data, options
           type: 'bar',
           data: { // data's children: labels, datasets
-              labels: fruitNames, // ['apple','watermelon','bomb'], // y axis labels
+              labels: itemNames, // ['breakfast','bag','chair'], // y axis labels
               datasets: [
                   { // dataset object's children: label, data, backgroundColor
-                      label: 'Number of slices',
-                      data: slicedData, // [5,2,0], // data points
+                      label: 'Number of votes',
+                      data: votesData, // [5,2,0], // data points
                       backgroundColor: 'rgba(255,100,20,1)'
                   }
               ]
@@ -138,7 +181,7 @@ function drawChart () {
           options: {
                 title: {
                     display: true,
-                    text: 'Fruits Sliced'
+                    text: 'Votes!!!'
                 },
                 scales: {
                     yAxes: [{
@@ -151,3 +194,8 @@ function drawChart () {
       }
   );
 }
+
+/* ********************
+    **************************************
+    **************************************************************
+    ********************************************************************************** */

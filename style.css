@@ -1,8 +1,7 @@
 #game {
     display: flex;
     justify-content: space-around;
-    /* width: 500px; */
-    height: 500px;
+    height: 150px;
 }
 
 #game img {
@@ -11,5 +10,11 @@
 }
 
 #chart-container {
-    width: 600px;
+    width: 800px;
+    
+}
+
+#chart.chartjs-render-monitor{
+    width: 1000px !important;
+    height: 500px !important;
 }
