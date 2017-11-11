@@ -181,7 +181,13 @@ function drawChart () {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            fontSize: 40
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontSize: 24
                         }
                     }]
                 }
