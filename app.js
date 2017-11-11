@@ -98,7 +98,7 @@ function clickHandler (e) {
     
     // increase number of times clicked and if over 5, call endGame()
     clicks++;
-    if (clicks >= 4) {
+    if (clicks >= 20) {
         endGame();
     }
 }
@@ -110,25 +110,23 @@ function clickHandler (e) {
 
 // RENDER IMAGES
 function appendRandomItem () {
+    tempArray = []
+    console.log(tempArray);
     const game = document.getElementById('game');
 
-    // select random item object from items array, save in randomItem
-    randomItem = items[Math.floor(Math.random() * items.length)];
-    const randomItemEle = randomItem.render(); // returns img element
+    // runs render once then compares next render to preceeding
+    // to prevent duplicates
+    do{
+        // select random item object from items array, save in randomItem
+         const randomItem = items[Math.floor(Math.random() * items.length)];
     
-    const two = game.querySelectorAll('img');
-    if(two.length){
-        console.log(two[0].classList);
-    }
-    //  const pagePix = game.querySelectorAll('img');
-    //  console.log(pagePix[0].classList);
-    
-    console.log(randomItem.type);
-    if(two.length){
-        if(randomItem.type !== two[0].classList.value){
+        if(!tempArray.includes(randomItem)){
+            const randomItemEle = randomItem.render(); // returns img element
             game.appendChild(randomItemEle);
-        }    
-    }
+          //  randomItem.wasDisplayed();
+            tempArray.push(randomItem);
+        }
+    }while(tempArray.length < 1);
 }
 
 // stops game after n clicks
@@ -138,10 +136,7 @@ function endGame () {
     game.removeEventListener('click', clickHandler);
 
     drawChart();
-    // save the items in localstorage!
-    // JSON.stringify turns an array of objects into a nice string
     localStorage.setItem('items', JSON.stringify(items));
-    // ^ same thing as: localStorage.items = items;
 }
 
 /* **********************************   CHART SECTION   ********************************************
@@ -160,20 +155,20 @@ function drawChart () {
       votesData.push(items[i].votes);
   }
 
-  // add a chart that shows # of slices per item
+  // add a chart
   const chartCanvas = document.getElementById('chart');
   const chartCtx = chartCanvas.getContext('2d');
 
   const chart = new Chart (
-      chartCtx, // first param is the canvas context
-      { // first level children: type, data, options
+      chartCtx,
+      {
           type: 'bar',
-          data: { // data's children: labels, datasets
-              labels: itemNames, // ['breakfast','bag','chair'], // y axis labels
+          data: {
+              labels: itemNames,
               datasets: [
-                  { // dataset object's children: label, data, backgroundColor
+                  {
                       label: 'Number of votes',
-                      data: votesData, // [5,2,0], // data points
+                      data: votesData,
                       backgroundColor: 'rgba(255,100,20,1)'
                   }
               ]
