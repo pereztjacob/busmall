@@ -14,7 +14,7 @@ if (localStorage.items) {
     // get them, instantiate them, and put them in our items array
     const itemsArray = JSON.parse(localStorage.items);
     console.log('itemsArray:', itemsArray);
-    
+
     for (let i = 0; i < itemsArray.length; i++) {
         // itemsArray[i] === {type: 'breakfast', src: 'breakfast.png', votes: 1}
         // make sure each item has an updated votes properties
@@ -70,15 +70,14 @@ game.addEventListener('click', clickHandler);
 function clickHandler (e) {
     const clickedItem = e.target;
 
-   // const selector = document.getElementById(game);
+    // const selector = document.getElementById(game);
     const pagePix = game.querySelectorAll('img');
-  //  console.log(pagePix[0].classList);
+    //  console.log(pagePix[0].classList);
     pagePix[0].remove();
     pagePix[1].remove();
     pagePix[2].remove();
     console.log(pagePix[0], pagePix[1], pagePix[2]);
-    
-    if (clickedItem.id === 'game') return; 
+    if (clickedItem.id === 'game') return;
 
     // looping over items array to find the item instance to update
     for (let i = 0; i < items.length; i ++) {
@@ -90,12 +89,12 @@ function clickHandler (e) {
 
     // remove element
     clickedItem.remove();
-    
+
     // render a new element
     for(let i = 0; i < 3; i++){
         appendRandomItem();
     }
-    
+
     // increase number of times clicked and if over 5, call endGame()
     clicks++;
     if (clicks >= 20) {
@@ -110,7 +109,7 @@ function clickHandler (e) {
 
 // RENDER IMAGES
 function appendRandomItem () {
-    tempArray = []
+    tempArray = [];
     console.log(tempArray);
     const game = document.getElementById('game');
 
@@ -118,12 +117,12 @@ function appendRandomItem () {
     // to prevent duplicates
     do{
         // select random item object from items array, save in randomItem
-         const randomItem = items[Math.floor(Math.random() * items.length)];
-    
+        const randomItem = items[Math.floor(Math.random() * items.length)];
+
         if(!tempArray.includes(randomItem)){
             const randomItemEle = randomItem.render(); // returns img element
             game.appendChild(randomItemEle);
-          //  randomItem.wasDisplayed();
+            //  randomItem.wasDisplayed();
             tempArray.push(randomItem);
         }
     }while(tempArray.length < 1);
@@ -147,33 +146,33 @@ function endGame () {
     ******* */
 
 function drawChart () {
-  const itemNames = [];
-  const votesData = [];
+    const itemNames = [];
+    const votesData = [];
 
-  for ( let i = 0; i < items.length; i++ ){
-      itemNames.push(items[i].type);
-      votesData.push(items[i].votes);
-  }
+    for ( let i = 0; i < items.length; i++ ){
+        itemNames.push(items[i].type);
+        votesData.push(items[i].votes);
+    }
 
-  // add a chart
-  const chartCanvas = document.getElementById('chart');
-  const chartCtx = chartCanvas.getContext('2d');
+    // add a chart
+    const chartCanvas = document.getElementById('chart');
+    const chartCtx = chartCanvas.getContext('2d');
 
-  const chart = new Chart (
-      chartCtx,
-      {
-          type: 'bar',
-          data: {
-              labels: itemNames,
-              datasets: [
-                  {
-                      label: 'Number of votes',
-                      data: votesData,
-                      backgroundColor: 'rgba(255,100,20,1)'
-                  }
-              ]
-          },
-          options: {
+    const chart = new Chart (
+        chartCtx,
+        {
+            type: 'bar',
+            data: {
+                labels: itemNames,
+                datasets: [
+                    {
+                        label: 'Number of votes',
+                        data: votesData,
+                        backgroundColor: 'rgba(255,100,20,1)'
+                    }
+                ]
+            },
+            options: {
                 title: {
                     display: true,
                     text: 'Votes!!!'
@@ -191,9 +190,9 @@ function drawChart () {
                         }
                     }]
                 }
-          }
-      }
-  );
+            }
+        }
+    );
 }
 
 /* ********************
