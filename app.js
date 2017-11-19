@@ -1,3 +1,4 @@
+'use strict';
 
 let clicks = 0;
 let items = [];
@@ -44,7 +45,7 @@ if (localStorage.items) {
     const usb = new Item('usb', 'images/usb.gif');
     const waterCan = new Item('water-can', 'images/water-can.jpg');
     const wineGlass = new Item('wine-glass', 'images/wine-glass.jpg');
-    
+
     items = [breakfast, bag, chair, banana, bathroom, boots, bubblegum, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, usb, waterCan, wineGlass];
 }
 
@@ -109,7 +110,7 @@ function clickHandler (e) {
 
 // RENDER IMAGES
 function appendRandomItem () {
-    tempArray = [];
+    const tempArray = [];
     console.log(tempArray);
     const game = document.getElementById('game');
 

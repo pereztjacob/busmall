@@ -4,6 +4,11 @@
       "es6": true
     },
     //  To learn more about the rules: https://eslint.org/docs/rules/
+    "globals": {
+        "Item": false,
+        "tempArray": false,
+        "chart": false
+    },
     "rules": {
       "semi": ["error", "always"],
       "quotes": ["warn", "single"],
@@ -19,4 +24,5 @@
       "no-var": "warn",
       "prefer-const": "warn"
     }
-  }
+}
+  
